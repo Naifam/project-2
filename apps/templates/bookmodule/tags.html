@@ -1,0 +1,109 @@
+{% extends "layouts/base.html" %}
+
+{% block stylesheets %}
+<style>
+    table, th, td{
+        border: 1px solid black;
+        border-collapse: collapse;
+    }      
+    
+    th, td{
+        padding: 8px;
+    }     
+</style>
+{% endblock stylesheets %}
+
+        
+
+{% block title %} New tags {% endblock %}
+
+{% block content %} 
+
+<p> This text has <b>subtext</b> using b tag</p>
+<p> This text has <strong>subtext</strong> using strong tag</p>
+<p> This text has <i>subtext</i> using i tag</p>
+<p> This text has <em>subtext</em> using em tag</p>
+<p> This text has <small>subtext</small> using small tag</p>
+<p> This text has <mark>subtext</mark> using mark tag</p>
+<p> This text has <del>subtext</del> using del tag</p>
+<p> This text has <ins>subtext</ins> using ins tag</p>
+<p> This text has X<sub>subtext</sub> using sub tag</p>
+<p> This text has X<sup>subtext</sup> using sup tag</p>
+
+
+<h2>Here is the list of best Books:</h2>
+<ul>
+ <li>Computer Nextwork</li>
+ <li>How to Program: Python</li>
+</ul>
+
+<h2>Here is the list of best Books:</h2>
+<ol start="50">
+ <li>Computer Nextwork</li>
+ <li>How to Program: Python</li>
+</ol>
+
+
+
+<p>Some fruits:</p>
+<ul>
+ <li>Grape</li>
+ <li>Citrus</li>
+ <ul>
+ <li>Orange</li>
+ <ol>
+<li>Enhance immunity</li>
+ <ul>
+ <li>Because of Vitamin C, producing white blood cells is increased</li>
+ </ul>
+<li>Roost brain function</li>
+ </ol>
+ <li>Lemon</li>
+</ul>
+ <li>Apple</li>
+<ol>
+ <li>Prevent inflammation</li>
+ <li>Improve digestive health</li>
+ </ol>
+ <li>Banana</li>
+</ul>
+
+
+
+
+<table style="border: 1px solid black;border-collapse:collapse;">
+
+    <tr>
+        <th>Book Name</th>
+        <th>Book Desc</th>
+        <th>Book Date</th>
+    </tr>
+
+    <tr>
+        <td>How to Program: C++</td>
+        <td>A book for learning how to program with c++, and it is usually givien for first semester</td>
+        <td>2016</td>
+    </tr>
+
+    <tr>
+        <td>How to Program: C++</td>
+        <td>A book for learning how to program with c++, and it is usually givien for first semester</td>
+        <td>2016</td>
+    </tr>
+
+    <tr>
+        <td>How to Program: C++</td>
+        <td>A book for learning how to program with c++, and it is usually givien for first semester</td>
+        <td>2016</td>
+    </tr>
+
+    <tr>
+        <td>How to Program: C++</td>
+        <td>A book for learning how to program with c++, and it is usually givien for first semester</td>
+        <td>2016</td>
+    </tr>
+
+</table>
+
+
+{% endblock %}

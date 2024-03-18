@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>
+            EBook - {% block title %}{% endblock %}
+        </title>
+
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+
+    </head>
+    <body>
+        {% include 'includes/header.html' %}
+        {% include 'includes/sidebar1.html' %}
+
+        {% block content %}
+        {% endblock content %}
+  
+
+        
+        {% include 'includes/sidebar2.html' %}
+        {% include 'includes/footer.html' %}
+    </body>
+</html>
