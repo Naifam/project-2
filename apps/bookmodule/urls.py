@@ -23,6 +23,7 @@ urlpatterns = [
     path('books/', views.getBooks),
     path('books/<int:bookid>', views.getBook),
     path('tags/', views.getTags),
-    path('myproducts/', views.getProducts),
+    path('Encryption/', views.Encrypt),
+    path('Create/',views.CreateAccount),
     
 ]

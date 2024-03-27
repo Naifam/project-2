@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Login page</title>  
+    <title>Create account page</title>  
     <style>
         body {
             margin: 0;
@@ -33,6 +34,7 @@
 
         input[type="text"],
         input[type="password"],
+        input[type="password"],
         input[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -52,11 +54,17 @@
             background-color: #45a049;
         }
     </style>
+    <script>
+        function redirectToBooks() {
+            window.location.href = "\myproducts";
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form id="loginForm" onsubmit="return validateLogin()">
+        
+        <form action="\myproducts">
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -66,37 +74,15 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div>
-                <input type="submit" value="Login">
+                <label for="password2">Confirm Password:</label>
+                <input type="password" id="password2" name="password2" required>
             </div>
-            <p>Don't have an account? <a href="\Create">Create one</a></p>
+            <div>
+                <input type="submit" value="Sign In">
+            </div>
+            <p>don't have an account? <a href="\myproducts">create one</a></p>
         </form>
     </div>
-
-    <script>
-        function validateLogin() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-
-            // Predefined list of valid usernames and passwords
-            var validAccounts = [
-                { username: "user1", password: "1234" },
-                { username: "user2", password: "1234" },
-                { username: "user3", password: "1234" }
-            ];
-
-            // Check if the entered username and password match any valid account
-            for (var i = 0; i < validAccounts.length; i++) {
-                if (username === validAccounts[i].username && password === validAccounts[i].password) {
-                    // Redirect to the desired page (e.g., myproducts.html)
-                    window.location.href = "/Encryption";
-                    return false; // Prevent form submission
-                }
-            }
-
-            // If no match found, display an error message
-            alert("Invalid username or password.");
-            return false; // Prevent form submission
-        }
-    </script>
 </body>
 </html>
+

@@ -33,6 +33,10 @@ def getTags(request):
         
     return render(request, 'bookmodule/tags.html')
 
-def getProducts(request):
+def Encrypt(request):
         
-    return render(request, 'bookmodule/myproducts.html')
+    return render(request, 'bookmodule/Encryption.html')
+
+def CreateAccount(request):
+        
+    return render(request, 'bookmodule/Create.html')
