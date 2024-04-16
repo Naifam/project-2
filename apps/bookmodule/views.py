@@ -40,3 +40,4 @@ def Encrypt(request):
 def CreateAccount(request):
         
     return render(request, 'bookmodule/Create.html')
+

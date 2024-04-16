@@ -25,5 +25,5 @@ urlpatterns = [
     path('tags/', views.getTags),
     path('Encryption/', views.Encrypt),
     path('Create/',views.CreateAccount),
-    
+    path('Create/',views.CreateAccount),
 ]
