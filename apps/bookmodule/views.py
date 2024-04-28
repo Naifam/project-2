@@ -1,5 +1,7 @@
 from django.shortcuts import render
-
+from .models import GeeksModel
+from .forms import GeeksForm
+ 
 # Create your views here.
 
 
@@ -41,3 +43,34 @@ def CreateAccount(request):
         
     return render(request, 'bookmodule/Create.html')
 
+
+# relative import of forms
+
+ 
+def create_view(request):
+    # dictionary for initial data with 
+    # field names as keys
+    context ={}
+ 
+    # add the dictionary during initialization
+    form = GeeksForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+         
+    context['form']= form
+    return render(request, "create_view.html", context)
+
+ 
+def home_view(request):
+    context ={}
+ 
+    # create object of form
+    form = GeeksForm(request.POST or None, request.FILES or None)
+     
+    # check if form data is valid
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+ 
+    context['form']= form
+    return render(request, "home.html", context)
