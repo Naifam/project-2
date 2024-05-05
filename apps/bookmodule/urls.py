@@ -20,10 +20,13 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path('index', views.index),
     path('books/', views.getBooks),
     path('books/<int:bookid>', views.getBook),
     path('tags/', views.getTags),
     path('Encryption/', views.Encrypt),
     path('Create/',views.CreateAccount),
-    path('Create/',views.CreateAccount),
+    path('Encrypt/',views.Encrypt),
+    path('view/',views.create_view),
+    path('create2/',views.create2),
 ]

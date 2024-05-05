@@ -1,23 +1,11 @@
+
 from django.db import models
-class GeeksModel(models.Model):
-
-	title = models.CharField(max_length = 200)
-	description = models.TextField()
-
-	
-	def __str__(self):
-		return self.title
 
 # Create your models here.
+class Task(models.Model):
+    Name = models.CharField(max_length = 50)
+    password = models.IntegerField(max_length = 10)
+   
 
   
-# declare a new model with a name "GeeksModel"
-class GeeksModel(models.Model):
-        # fields of the model
-    title = models.CharField(max_length = 200)
-    description = models.TextField()
-  
-        # renames the instances of the model
-        # with their title name
-    def __str__(self):
-        return self.title
+
