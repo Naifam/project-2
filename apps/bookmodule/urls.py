@@ -17,16 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
-    path('', views.index),
-    path('index', views.index),
-    path('books/', views.getBooks),
-    path('books/<int:bookid>', views.getBook),
+    path('', views.create_view),
     path('tags/', views.getTags),
     path('Encryption/', views.Encrypt),
-    path('Create/',views.CreateAccount),
+    path('Create/',views.Create),
     path('Encrypt/',views.Encrypt),
-    path('view/',views.create_view),
-    path('create2/',views.create2),
+    path('admin/', admin.site.urls),
+    path('index/', views.index),
+    path('display/', views.disp)
 ]

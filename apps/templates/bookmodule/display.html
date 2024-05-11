@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<h1>Book List</h1>
+<table border="1">
+    <tr>
+        <th>UserName</th>
+        <th>Password</th>
+        
+    </tr>
+    {% for b in display %}
+        <tr>
+            <td>{{b.UserName}}</td>
+    
+            <td>{{b.Password}}</td>
+        </tr>
+    {%endfor%}
+</table>
+{% endblock content %}
