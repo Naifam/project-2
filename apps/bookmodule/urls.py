@@ -24,9 +24,9 @@ urlpatterns = [
     path('', views.create_view),
     path('tags/', views.getTags),
     path('Encryption/', views.Encrypt),
-    path('Create/',views.Create),
-    path('Encrypt/',views.Encrypt),
     path('admin/', admin.site.urls),
-    path('index/', views.index),
-    path('display/', views.disp)
+    path('users/', views.user_list, name='user_list'),
+    path('create/', views.create_user, name='create_user'),
+    path('update/<int:pk>/', views.update_user, name='update_user'),
+    path('delete/<int:pk>/', views.delete_user, name='delete_user'),
 ]
