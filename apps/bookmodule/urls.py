@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.index.html),
+    path('', views.index),
     path('Encryption/', views.Encrypt),
     path('admin/', admin.site.urls),
     path('users/', views.user_list, name='user_list'),

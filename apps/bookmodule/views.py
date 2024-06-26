@@ -7,7 +7,7 @@ def Encrypt(request):
         
     return render(request, 'bookmodule/Encryption.html')
 
-def create_view(request):
+def index(request):
     
     context = {}
 
