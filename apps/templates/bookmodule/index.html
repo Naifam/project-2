@@ -40,7 +40,6 @@
 </style>
 
 <form method="POST" enctype="multipart/form-data"> 
-    <p>Want to display data? <a href="\display">Display</a></p>
     <!-- Security token -->
     {% csrf_token %} 
 
@@ -48,7 +47,8 @@
     {{ form.as_p }} 
 
     <input type="submit" value="Submit">
-
-    <p><strong>tags </strong><a href="\tags">Press here</a></p>
     <p><strong>manage users </strong><a href="\users">Press here</a></p>
+
+    <p><strong>products website</strong><a href="\products">Press here</a></p>
+
 </form>

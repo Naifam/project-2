@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+        .cart-item {
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            padding: 20px;
+        }
+        .cart-item span {
+            color: #343a40;
+            font-size: 18px;
+        }
+        .cart-item button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .cart-item button:hover {
+            background-color: #c82333;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            color: #343a40;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .back-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartContainer = document.getElementById('cart-items');
+            cartContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                let cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <span>${item.name} - $${item.price.toFixed(2)}</span>
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartContainer.appendChild(cartItem);
+            });
+            document.getElementById('total').textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        window.onload = loadCart;
+    </script>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="cart-items">
+        <!-- Cart items will be dynamically loaded here -->
+    </div>
+    <div class="total" id="total">
+        Total: $0.00
+    </div>
+    <div class="back-link">
+    </div>
+</body>
+<a href="\products">Back to Products</a>
+
+</html>

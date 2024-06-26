@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<h2>database:</h2>
+<table border="1">
+    <tr>
+        <th>UserName</th>
+        <th>Password</th>
+        
+    </tr>
+    {% for b in display %}
+        <tr>
+            <td>{{b.UserName}}</td>
+    
+            <td>{{b.Password}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

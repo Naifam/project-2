@@ -3,10 +3,6 @@ from .models import GeeksModel
 from .forms import GeeksForm
 # Create your views here.
 
-def getTags(request):
-        
-    return render(request, 'bookmodule/tags.html')
-
 def Encrypt(request):
         
     return render(request, 'bookmodule/Encryption.html')
@@ -21,7 +17,7 @@ def create_view(request):
         return redirect('/Encryption')
         
     context['form'] = form
-    return render(request, "bookmodule/create_view.html", context)
+    return render(request, "bookmodule/index.html", context)
  
 def user_list(request):
     users = GeeksModel.objects.all()
@@ -54,3 +50,14 @@ def delete_user(request, pk):
         user.delete()
         return redirect('user_list')
     return render(request, 'bookmodule/user_confirm_delete.html', {'user': user})
+
+
+def products(request):
+    
+    return render(request, 'bookmodule/products.html')
+
+
+
+def Cart(request):
+    
+    return render(request, 'bookmodule/cart.html')
