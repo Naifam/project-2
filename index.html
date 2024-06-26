@@ -1,0 +1,54 @@
+<style>
+    /* Basic form styling */
+    form {
+        width: 60%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    /* Style for links */
+    a {
+        color: blue;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* Style for buttons */
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<form method="POST" enctype="multipart/form-data"> 
+    <!-- Security token -->
+    {% csrf_token %} 
+
+    <!-- Using the formset -->
+    {{ form.as_p }} 
+
+    <input type="submit" value="Submit">
+    <p><strong>manage users </strong><a href="\users">Press here</a></p>
+
+    <p><strong>products website</strong><a href="\C:\Users\naifx\projectGit\project-2\apps\templates\bookmodule\index.html">Press here</a></p>
+
+</form>
