@@ -1,54 +1,77 @@
-<style>
-    /* Basic form styling */
-    form {
-        width: 60%;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Web Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            padding: 20px;
+            background-color: #fff;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
 
-    p {
-        margin-bottom: 10px;
-    }
+<header>
+    <h1>Welcome to My Website</h1>
+</header>
 
-    /* Style for links */
-    a {
-        color: blue;
-        text-decoration: none;
-    }
+<nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+</nav>
 
-    a:hover {
-        text-decoration: underline;
-    }
+<main>
+    <h2>About Us</h2>
+    <p>This is a simple web page created as a template. You can customize it by adding your content, images, or additional sections to suit your project needs. This section can be used to introduce your business or personal site.</p>
+</main>
 
-    /* Style for buttons */
-    input[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+<footer>
+    <p>&copy; 2024 My Web Page. All rights reserved.</p>
+</footer>
 
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
-</style>
-
-<form method="POST" enctype="multipart/form-data"> 
-    <!-- Security token -->
-    {% csrf_token %} 
-
-    <!-- Using the formset -->
-    {{ form.as_p }} 
-
-    <input type="submit" value="Submit">
-    <p><strong>manage users </strong><a href="\users">Press here</a></p>
-
-    <p><strong>products website</strong><a href="\products">Press here</a></p>
-
-</form>
+</body>
+</html>
