@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Loan Management System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block page_actions %}
+    <div class="btn-group" role="group">
+        <a href="{% url 'loans:borrower_create' %}" class="btn btn-outline-primary">
+            <i class="fas fa-user-plus"></i> Add Borrower
+        </a>
+        <a href="{% url 'loans:loan_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> New Loan
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Statistics Cards -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2 card-stat">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Loans</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_loans }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2 card-stat">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Active Loans</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ active_loans }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2 card-stat">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Total Borrowers</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_borrowers }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2 card-stat">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Overdue Payments</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ overdue_installments }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Financial Summary -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Financial Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="text-muted mb-1">Total Principal</p>
+                        <p class="h4 text-success">SR {{ total_principal|floatformat:2 }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-muted mb-1">Outstanding Amount</p>
+                        <p class="h4 text-warning">SR {{ total_outstanding|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Alerts -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Payment Alerts</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="text-muted mb-1">Overdue</p>
+                        <p class="h4 text-danger">{{ overdue_installments }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-muted mb-1">Due Soon (≤10 days)</p>
+                        <p class="h4 text-warning">{{ due_soon_installments }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Loans -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Loans</h6>
+                <a href="{% url 'loans:loan_list' %}" class="btn btn-sm btn-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_loans %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Borrower</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for loan in recent_loans %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'loans:borrower_detail' loan.borrower.pk %}">
+                                            {{ loan.borrower.first_name }} {{ loan.borrower.last_name }}
+                                        </a>
+                                    </td>
+                                    <td>SR {{ loan.principal_amount|floatformat:2 }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if loan.status == 'active' %}success{% elif loan.status == 'completed' %}secondary{% elif loan.status == 'defaulted' %}danger{% else %}warning{% endif %}">
+                                            {{ loan.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No loans found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Overdue Installments -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Overdue Payments</h6>
+                <a href="{% url 'loans:installment_list' %}?due=overdue" class="btn btn-sm btn-danger">View All</a>
+            </div>
+            <div class="card-body">
+                {% if overdue_installments_list %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Borrower</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for installment in overdue_installments_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'loans:borrower_detail' installment.loan.borrower.pk %}">
+                                            {{ installment.loan.borrower.first_name }} {{ installment.loan.borrower.last_name }}
+                                        </a>
+                                    </td>
+                                    <td>SR {{ installment.amount|floatformat:2 }}</td>
+                                    <td class="text-danger">{{ installment.due_date }}</td>
+                                    <td>
+                                        <a href="{% url 'loans:payment_create' installment.pk %}" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-credit-card"></i> Pay Now
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No overdue payments.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Due Soon Installments -->
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Payments Due Soon (≤10 days)</h6>
+                <a href="{% url 'loans:installment_list' %}?due=due_soon" class="btn btn-sm btn-warning">View All</a>
+            </div>
+            <div class="card-body">
+                {% if due_soon_installments_list %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Borrower</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Days Left</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for installment in due_soon_installments_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'loans:borrower_detail' installment.loan.borrower.pk %}">
+                                            {{ installment.loan.borrower.first_name }} {{ installment.loan.borrower.last_name }}
+                                        </a>
+                                    </td>
+                                    <td>SR {{ installment.amount|floatformat:2 }}</td>
+                                    <td>{{ installment.due_date }}</td>
+                                    <td>
+                                        <span class="badge bg-warning">{{ installment.days_until_due }} days</span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'loans:payment_create' installment.pk %}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-credit-card"></i> Pay Now
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No payments due soon.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

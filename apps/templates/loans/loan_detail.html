@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}Loan #{{ loan.id }} - Loan Management System{% endblock %}
+{% block page_title %}Loan #{{ loan.id }}{% endblock %}
+
+{% block page_actions %}
+    <div class="btn-group" role="group">
+        <a href="{% url 'loans:loan_edit' loan.pk %}" class="btn btn-warning">
+            <i class="fas fa-edit"></i> Edit Loan
+        </a>
+        <a href="{% url 'loans:loan_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Loans
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Loan Information -->
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Loan Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Borrower:</strong> 
+                            <a href="{% url 'loans:borrower_detail' loan.borrower.pk %}">
+                                {{ loan.borrower.first_name }} {{ loan.borrower.last_name }}
+                            </a>
+                        </p>
+                        <p><strong>Principal Amount:</strong> SR {{ loan.principal_amount|floatformat:2 }}</p>
+                        <p><strong>Profit Margin:</strong> 
+                            {% if loan.profit_margin_type == 'percent' %}
+                                {{ loan.profit_margin }}%
+                            {% else %}
+                                SR {{ loan.profit_margin|floatformat:2 }}
+                            {% endif %}
+                        </p>
+                        <p><strong>Duration:</strong> {{ loan.duration_months }} months</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Monthly Payment:</strong> SR {{ loan.monthly_payment|floatformat:2 }}</p>
+                        <p><strong>Total Amount:</strong> SR {{ loan.total_amount|floatformat:2 }}</p>
+                        <p><strong>Total Interest:</strong> SR {{ loan.total_interest|floatformat:2 }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-{% if loan.status == 'active' %}success{% elif loan.status == 'completed' %}secondary{% elif loan.status == 'defaulted' %}danger{% else %}warning{% endif %}">
+                                {{ loan.get_status_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p><strong>Start Date:</strong> {{ loan.start_date }}</p>
+                        <p><strong>End Date:</strong> {{ loan.end_date }}</p>
+                        <p><strong>Profit Margin:</strong> {{ loan.profit_margin }}%</p>
+                        <p><strong>Profit Amount:</strong> ${{ loan.profit_amount|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan Statistics -->
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Loan Statistics</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Paid Installments:</strong></p>
+                    <p class="h4 text-success">{{ paid_installments }}/{{ loan.duration_months }}</p>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Pending Installments:</strong></p>
+                    <p class="h4 text-warning">{{ pending_installments }}</p>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Overdue Installments:</strong></p>
+                    <p class="h4 text-danger">{{ overdue_installments }}</p>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Total Paid:</strong></p>
+                    <p class="h4 text-info">SR {{ total_paid|floatformat:2 }}</p>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Remaining Balance:</strong></p>
+                    <p class="h4 text-primary">SR {{ remaining_balance|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Installments Table -->
+<div class="card shadow">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Payment Schedule</h6>
+        <div class="btn-group" role="group">
+            <button class="btn btn-sm btn-outline-primary" onclick="filterInstallments('all')">All</button>
+            <button class="btn btn-sm btn-outline-warning" onclick="filterInstallments('pending')">Pending</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="filterInstallments('overdue')">Overdue</button>
+            <button class="btn btn-sm btn-outline-success" onclick="filterInstallments('paid')">Paid</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="installmentsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Due Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Days Left</th>
+                        <th>Paid Amount</th>
+                        <th>Paid Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for installment in installments %}
+                    <tr class="installment-row" data-status="{{ installment.status }}">
+                        <td>{{ installment.installment_number }}</td>
+                        <td>{{ installment.due_date }}</td>
+                        <td>SR {{ installment.amount|floatformat:2 }}</td>
+                        <td>
+                            <span class="badge bg-{{ installment.status_color }}">
+                                {{ installment.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if installment.days_until_due < 0 %}
+                                <span class="text-danger">{{ installment.days_until_due }} days overdue</span>
+                            {% elif installment.days_until_due <= 10 %}
+                                <span class="text-warning">{{ installment.days_until_due }} days</span>
+                            {% else %}
+                                <span class="text-success">{{ installment.days_until_due }} days</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            SR {{ installment.paid_amount|floatformat:2 }}
+                            {% if installment.status == 'partial' %}
+                                <div class="progress mt-1" style="height: 5px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                         style="width: {{ installment.payment_progress }}%"></div>
+                                </div>
+                                <small class="text-muted">{{ installment.payment_progress|floatformat:0 }}% paid</small>
+                            {% endif %}
+                        </td>
+                        <td>{{ installment.paid_date|default:"-" }}</td>
+                        <td>
+                            {% if installment.status == 'paid' %}
+                                <span class="text-muted">
+                                    <i class="fas fa-check-circle"></i> Paid
+                                </span>
+                            {% elif installment.status == 'partial' %}
+                                <a href="{% url 'loans:payment_create' installment.pk %}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-money-bill-wave"></i> Add Payment
+                                </a>
+                                <small class="text-muted d-block">Partial: SR {{ installment.paid_amount|floatformat:2 }}/SR {{ installment.amount|floatformat:2 }}</small>
+                            {% else %}
+                                <a href="{% url 'loans:payment_create' installment.pk %}" class="btn btn-sm btn-success">
+                                    <i class="fas fa-money-bill-wave"></i> Record Payment
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterInstallments(status) {
+    const rows = document.querySelectorAll('.installment-row');
+    rows.forEach(row => {
+        if (status === 'all' || row.dataset.status === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

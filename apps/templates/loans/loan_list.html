@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Loans - Loan Management System{% endblock %}
+{% block page_title %}Loans{% endblock %}
+
+{% block page_actions %}
+    <a href="{% url 'loans:loan_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Create New Loan
+    </a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Loans</h6>
+    </div>
+    <div class="card-body">
+        {% if loans %}
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Borrower</th>
+                            <th>Principal Amount</th>
+                            <th>Profit Margin</th>
+                            <th>Duration</th>
+                            <th>Monthly Payment</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for loan in loans %}
+                        <tr>
+                            <td><strong>#{{ loan.id }}</strong></td>
+                            <td>
+                                <a href="{% url 'loans:borrower_detail' loan.borrower.pk %}">
+                                    {{ loan.borrower.first_name }} {{ loan.borrower.last_name }}
+                                </a>
+                            </td>
+                            <td>SR {{ loan.principal_amount|floatformat:2 }}</td>
+                            <td>
+                                {% if loan.profit_margin_type == 'percent' %}
+                                    {{ loan.profit_margin }}%
+                                {% else %}
+                                    SR {{ loan.profit_margin|floatformat:2 }}
+                                {% endif %}
+                            </td>
+                            <td>{{ loan.duration_months }} months</td>
+                            <td>SR {{ loan.monthly_payment|floatformat:2 }}</td>
+                            <td>
+                                <span class="badge bg-{% if loan.status == 'active' %}success{% elif loan.status == 'completed' %}secondary{% elif loan.status == 'defaulted' %}danger{% else %}warning{% endif %}">
+                                    {{ loan.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ loan.start_date }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'loans:loan_detail' loan.pk %}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <a href="{% url 'loans:loan_edit' loan.pk %}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-invoice-dollar fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No loans found</h5>
+                <p class="text-muted">Start by creating your first loan.</p>
+                <a href="{% url 'loans:loan_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create First Loan
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
